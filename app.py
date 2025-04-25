@@ -36,7 +36,7 @@ st.markdown("""
             background-color: #1e293b;
             border-radius: 20px;
             padding: 1.5rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
             margin-bottom: 2rem;
         }
         .badge {
@@ -46,13 +46,38 @@ st.markdown("""
             padding: 0.3rem 0.7rem;
             border-radius: 10px;
             font-size: 0.75rem;
-            margin-right: 0.5rem;
+            margin: 0.3rem 0.3rem 0 0;
         }
         .social-links a {
             color: #0ea5e9;
             margin-right: 1rem;
             text-decoration: none;
             font-weight: bold;
+        }
+        @media screen and (max-width: 768px) {
+            .header {
+                height: 200px !important;
+            }
+            .header-text {
+                font-size: 1.5rem !important;
+                left: 20px !important;
+                bottom: 15px !important;
+            }
+            .card {
+                padding: 1rem !important;
+            }
+            .stImage img {
+                width: 100% !important;
+                height: auto !important;
+                border-radius: 12px;
+            }
+            .stButton button {
+                font-size: 0.85rem !important;
+            }
+            .social-links a {
+                display: block;
+                margin-bottom: 0.5rem;
+            }
         }
     </style>
 """, unsafe_allow_html=True)
@@ -87,9 +112,9 @@ st.markdown(f"""
 if not st.session_state.get("admin_mode"):
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     if st.session_state.profile_image:
-        st.image(st.session_state.profile_image, width=150)
+        st.image(st.session_state.profile_image, use_column_width=True)
     else:
-        st.image("https://i.imgur.com/7yUvePI.png", width=150)
+        st.image("https://i.imgur.com/7yUvePI.png", use_column_width=True)
     st.markdown(f"*{st.session_state.deskripsi}*")
     st.markdown("""
     <div class="social-links">
@@ -204,4 +229,11 @@ if st.session_state.get("admin_mode"):
 st.markdown("""
 <hr style="border: 1px solid #0ea5e9;">
 <center><small>© 2025 Dibuat dengan Streamlit</small></center>
+""", unsafe_allow_html=True)
+
+# Auto scroll to top
+st.markdown("""
+<script>
+    window.scrollTo(0, 0);
+</script>
 """, unsafe_allow_html=True)
