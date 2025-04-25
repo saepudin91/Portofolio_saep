@@ -151,7 +151,7 @@ if not st.session_state.get("admin_mode"):
     st.markdown("Silakan hubungi saya melalui email: contoh@email.com")
     if st.session_state.get("cv_link"):
         st.markdown(f"""
-        <a href="{st.session_state.cv_link}" target="_blank">
+        <a href="{st.session_state.cv_link}" download="CV_{st.session_state.nama}.pdf" target="_blank">
             <button style="background-color:#0ea5e9;color:white;padding:10px 20px;border:none;border-radius:10px;margin-top:10px;">
                 Unduh CV Saya
             </button>
@@ -179,8 +179,14 @@ if st.session_state.get("admin_mode"):
         st.session_state.nama = st.text_input("Nama", value=st.session_state.nama)
         st.session_state.deskripsi = st.text_area("Deskripsi Singkat", value=st.session_state.deskripsi)
 
-        st.subheader("Link CV")
-        st.session_state.cv_link = st.text_input("Masukkan Link CV", value=st.session_state.cv_link)
+        st.subheader("Link / Upload CV")
+        st.session_state.cv_link = st.text_input("Atau Masukkan Link CV", value=st.session_state.cv_link)
+        cv_upload = st.file_uploader("Atau Upload File CV (PDF)", type=["pdf"])
+        if cv_upload:
+            cv_bytes = cv_upload.read()
+            b64_cv = base64.b64encode(cv_bytes).decode()
+            st.session_state.cv_link = f"data:application/pdf;base64,{b64_cv}"
+            st.success("CV berhasil diunggah dan siap diunduh!")
 
     # Kelola Skills
     st.markdown("<div class='card'>", unsafe_allow_html=True)
