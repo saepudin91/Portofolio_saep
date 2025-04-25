@@ -100,6 +100,9 @@ if "deskripsi" not in st.session_state:
     st.session_state.deskripsi = "Saya adalah seorang pengembang aplikasi Streamlit yang antusias belajar hal baru."
 if "cv_link" not in st.session_state:
     st.session_state.cv_link = ""
+for key in ["skills", "pengalaman", "proyek"]:
+    if key not in st.session_state:
+        st.session_state[key] = []
 
 # Header Section
 st.markdown(f"""
@@ -127,19 +130,19 @@ if not st.session_state.get("admin_mode"):
 
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Keahlian")
-    for skill in st.session_state.get("skills", ["Python", "Streamlit", "Machine Learning"]):
+    for skill in st.session_state.get("skills", []):
         st.markdown(f"<span class='badge'>{skill}</span>", unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Pengalaman")
-    for exp in st.session_state.get("pengalaman", ["Data Analyst Intern di PT Contoh Data", "Asisten Praktikum Data Science"]):
+    for exp in st.session_state.get("pengalaman", []):
         st.markdown(f"- {exp}")
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Proyek Portofolio")
-    for proj in st.session_state.get("proyek", ["Aplikasi Prediksi Nilai Siswa Berbasis Streamlit", "Dashboard Interaktif untuk Analisis Penjualan"]):
+    for proj in st.session_state.get("proyek", []):
         st.markdown(f"- {proj}")
     st.markdown("</div>", unsafe_allow_html=True)
 
@@ -179,16 +182,14 @@ if st.session_state.get("admin_mode"):
         st.subheader("Link CV")
         st.session_state.cv_link = st.text_input("Masukkan Link CV", value=st.session_state.cv_link)
 
-    for key in ["skills", "pengalaman", "proyek"]:
-        if key not in st.session_state:
-            st.session_state[key] = []
-
+    # Kelola Skills
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Kelola Skills")
     new_skill = st.text_input("Tambah Skill", key="new_skill")
     if st.button("Tambah Skill"):
         if new_skill:
             st.session_state.skills.append(new_skill)
+            st.rerun()
     for i, skill in enumerate(st.session_state.skills):
         col1, col2 = st.columns([6, 1])
         col1.write(f"- {skill}")
@@ -197,12 +198,14 @@ if st.session_state.get("admin_mode"):
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # Kelola Pengalaman
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Kelola Pengalaman")
     new_exp = st.text_input("Tambah Pengalaman", key="new_exp")
     if st.button("Tambah Pengalaman"):
         if new_exp:
             st.session_state.pengalaman.append(new_exp)
+            st.rerun()
     for i, exp in enumerate(st.session_state.pengalaman):
         col1, col2 = st.columns([6, 1])
         col1.write(f"- {exp}")
@@ -211,12 +214,14 @@ if st.session_state.get("admin_mode"):
             st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
+    # Kelola Proyek
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     st.subheader("Kelola Proyek")
     new_proj = st.text_input("Tambah Proyek", key="new_proj")
     if st.button("Tambah Proyek"):
         if new_proj:
             st.session_state.proyek.append(new_proj)
+            st.rerun()
     for i, proj in enumerate(st.session_state.proyek):
         col1, col2 = st.columns([6, 1])
         col1.write(f"- {proj}")
