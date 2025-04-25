@@ -16,21 +16,54 @@ st.markdown("""
             padding: 0;
         }
         .header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             position: relative;
             background-size: cover;
             background-position: center;
             height: 300px;
             border-radius: 0 0 20px 20px;
-            margin-bottom: 2rem;
+            margin-bottom: 4rem;
+            flex-direction: column;
+            text-align: center;
+            padding: 0 1rem;
         }
-        .header-text {
-            position: absolute;
-            bottom: 20px;
-            left: 40px;
+        .profile-photo-center {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid white;
+            object-fit: cover;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        .header-text-center {
             color: white;
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: bold;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.6);
+            margin-bottom: 10px;
+        }
+        .social-links-bottom {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .social-links-bottom a {
+            color: white;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: bold;
+            background-color: #0ea5e9;
+            padding: 6px 12px;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .social-links-bottom a:hover {
+            background-color: #0369a1;
         }
         .card {
             background-color: #1e293b;
@@ -48,48 +81,26 @@ st.markdown("""
             font-size: 0.75rem;
             margin: 0.3rem 0.3rem 0 0;
         }
-        .social-links a {
-            color: #0ea5e9;
-            margin-right: 1rem;
-            text-decoration: none;
-            font-weight: bold;
-        }
         @media screen and (max-width: 768px) {
             .header {
-                height: 200px !important;
+                height: auto !important;
+                padding: 2rem 1rem;
             }
-            .header-text {
-                font-size: 1.5rem !important;
-                left: 20px !important;
-                bottom: 15px !important;
+            .profile-photo-center {
+                width: 100px !important;
+                height: 100px !important;
+            }
+            .header-text-center {
+                font-size: 1.4rem !important;
             }
             .card {
                 padding: 1rem !important;
-            }
-            .stImage img {
-                width: 100% !important;
-                height: auto !important;
-                border-radius: 12px;
-            }
-            .stButton button {
-                font-size: 0.85rem !important;
-            }
-            .social-links a {
-                display: block;
-                margin-bottom: 0.5rem;
             }
         }
     </style>
 """, unsafe_allow_html=True)
 
-# Login Admin Mode
-password = st.sidebar.text_input("Masukkan password untuk Admin Mode", type="password")
-if password == "admin123":
-    st.session_state.admin_mode = True
-else:
-    st.session_state.admin_mode = False
-
-# Default session state
+# Session state default
 if "header_image" not in st.session_state:
     st.session_state.header_image = None
 if "profile_image" not in st.session_state:
@@ -104,28 +115,30 @@ for key in ["skills", "pengalaman", "proyek"]:
     if key not in st.session_state:
         st.session_state[key] = []
 
-# Header Section
+# Admin mode
+password = st.sidebar.text_input("Masukkan password untuk Admin Mode", type="password")
+if password == "admin123":
+    st.session_state.admin_mode = True
+else:
+    st.session_state.admin_mode = False
+
+# Header
 st.markdown(f"""
 <div class="header" style="background-image: url('{st.session_state.header_image if st.session_state.header_image else 'https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1400&q=80'}');">
-  <div class="header-text">{st.session_state.nama}</div>
+    <img src="{st.session_state.profile_image if st.session_state.profile_image else 'https://i.imgur.com/7yUvePI.png'}" class="profile-photo-center">
+    <div class="header-text-center">{st.session_state.nama}</div>
+    <div class="social-links-bottom">
+        <a href="https://instagram.com/yourusername" target="_blank">Instagram</a>
+        <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+        <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+    </div>
 </div>
 """, unsafe_allow_html=True)
 
 # Mode Publik
 if not st.session_state.get("admin_mode"):
     st.markdown("<div class='card'>", unsafe_allow_html=True)
-    if st.session_state.profile_image:
-        st.image(st.session_state.profile_image, use_container_width=True)
-    else:
-        st.image("https://i.imgur.com/7yUvePI.png", use_container_width=True)
-    st.markdown(f"*{st.session_state.deskripsi}*")
-    st.markdown("""
-    <div class="social-links">
-        <a href="#">Instagram</a>
-        <a href="#">LinkedIn</a>
-        <a href="#">GitHub</a>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown(f"{st.session_state.deskripsi}")
     st.markdown("</div>", unsafe_allow_html=True)
 
     st.markdown("<div class='card'>", unsafe_allow_html=True)
