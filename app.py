@@ -115,9 +115,9 @@ st.markdown(f"""
 if not st.session_state.get("admin_mode"):
     st.markdown("<div class='card'>", unsafe_allow_html=True)
     if st.session_state.profile_image:
-        st.image(st.session_state.profile_image, use_column_width=True)
+        st.image(st.session_state.profile_image, use_container_width=True)
     else:
-        st.image("https://i.imgur.com/7yUvePI.png", use_column_width=True)
+        st.image("https://i.imgur.com/7yUvePI.png", use_container_width=True)
     st.markdown(f"*{st.session_state.deskripsi}*")
     st.markdown("""
     <div class="social-links">
